@@ -1,0 +1,26 @@
+- host: server
+  tasks:
+    - name: install python-docker centos
+      yum:
+        name: python-docker
+        state: present
+      when:
+      - ansible_distribution == "CentOS"
+    - name: install python-docker Ubuntu
+      yum:
+        name: python3-docker
+        state: present
+      when:
+      - ansible_distribution == "Ubuntu"
+    - name: create container
+      docker_container:
+        name: container_by_jenkyns
+        image: johannesmike/apache-ubuntu:1
+        state: started
+        published_port:
+          - 80:80
+        recreate: yes
+        interactive: yes
+        detach: yes
+        
+      
